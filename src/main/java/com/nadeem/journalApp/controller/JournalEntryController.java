@@ -25,13 +25,20 @@ public class JournalEntryController {
 
     @GetMapping("{userName}")
     public ResponseEntity<?> getAll(@PathVariable String userName){
-        User user = userService.getUserByUsername(userName);
-        List<JournalEntry> all = user.getJournals();
+        try{
+            User user = userService.getUserByUsername(userName);
 
-        if(!all.isEmpty())
-            return new ResponseEntity<>(all, HttpStatus.OK);
+            List<JournalEntry> all = user.getJournals();
 
-        return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if(!all.isEmpty())
+                return new ResponseEntity<>(all, HttpStatus.OK);
+
+            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
+        }
 
 
     }
@@ -52,7 +59,7 @@ public class JournalEntryController {
         //make sure that input from req is of the same format as the class specified with reqbody
         try{
             myEntry.setDate(LocalDateTime.now());
-        journalEntryService.saveEntry(myEntry,userName);
+            journalEntryService.saveEntry(myEntry,userName);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
@@ -68,12 +75,12 @@ public class JournalEntryController {
     }
 
     @PutMapping("/{userName}/{myId}")
-    public ResponseEntity<?> updateJournalById(@PathVariable ObjectId myId, @RequestBody JournalEntry updateEntry , @PathVariable String userName){
+    public ResponseEntity<?> updateJournalById(@PathVariable String userName,@PathVariable ObjectId myId, @RequestBody JournalEntry updateEntry ){
         Optional<JournalEntry> old = journalEntryService.showById(myId);
         if(old.isPresent()){
             old.get().setTitle(updateEntry.getTitle() != null && !updateEntry.getTitle().equals("") ? updateEntry.getTitle() : old.get().getTitle());
             old.get().setContent(updateEntry.getContent() != null && !updateEntry.getTitle().equals("") ? updateEntry.getContent() : old.get().getContent());
-            journalEntryService.saveEntry(old.get());
+            journalEntryService.saveEntry(old.get(),userName);
             return new ResponseEntity<>(old.get(),HttpStatus.OK);
         }
         return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
