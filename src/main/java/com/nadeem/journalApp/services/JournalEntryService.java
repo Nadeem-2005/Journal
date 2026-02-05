@@ -7,7 +7,9 @@ import com.nadeem.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +25,30 @@ public class JournalEntryService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
+    /**
+     * this tells spring that this whole functioon is to be treated as a single transaction enforcing atomicity
+     * i.e.., if an error occurs , lets say after journalId is added to user (local object) but just before it can
+     * be updated by userRespository's function, then instead of that refernce not being present ins user collection but the journal being present in its own,
+     * all the successfull transaction rolls back
+     * NOTE: for this to take place, JournalApplication must have an annotation @EnableTransactionManagement
+     */
     public void saveEntry(JournalEntry journalEntry, String userName){
 
-        User user = userRepository.findByUserName(userName);
-        JournalEntry savedJournal = journalEntryRepository.save(journalEntry);
-        user.getJournals().add(savedJournal);
-        userRepository.save(user);
-        //there cant be 2 documents with same id so mongodb replaces the value insttead of creating a new document
+        try{
+
+            User user = userRepository.findByUserName(userName);
+            JournalEntry savedJournal = journalEntryRepository.save(journalEntry);
+            user.getJournals().add(savedJournal);
+            userRepository.save(user);
+        }
+        catch (Exception e){
+            System.out.println(e);
+            throw new RuntimeException("An error has occured while saving the entry");
+        }
+
+
+        //there cant be 2 documents with same id so mongodb replaces the value instead of creating a new document
     }
 
     public List<JournalEntry> showAll(){
