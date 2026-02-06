@@ -53,6 +53,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+
+<!--		spring security protects all the paths by default and also defaulta at using http security. Thus -->
+<!--		an endpoint cant be hit unitl and unless it provides a base64 endcoded username:password-->
+		<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
