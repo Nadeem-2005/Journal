@@ -19,8 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private CustomUserDetailService customUserDetailService;
+//    @Autowired
+//    private CustomUserDetailService customUserDetailService;
 
     // 1 Security Rules
 //    http.authorizeRequests(): This tells Spring Security to start authorizing the requests.
