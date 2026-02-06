@@ -1,5 +1,7 @@
 package com.nadeem.journalApp.config;
 
+import com.nadeem.journalApp.services.CustomUserDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,6 +18,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailService customUserDetailService;
 
     // 1 Security Rules
 //    http.authorizeRequests(): This tells Spring Security to start authorizing the requests.
@@ -34,7 +39,7 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable()) // disable for APIs
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(request -> request
                         .requestMatchers("/login").permitAll()//redirect happens automatically
                         .anyRequest().authenticated()
 
@@ -48,17 +53,27 @@ public class SecurityConfig {
 
 
     // 2 User Storage (In-Memory)
-    @Bean
-    public UserDetailsService userDetailsService() {
+//    The below are the things needed to be implemented when we need to fetch username and pwrd from DB
+    /**
+        A User entity to represent the user data model.
+        A repository UserRepository to interact with MongoDB.
+        UserDetailsService implementation to fetch user details.
+        A configuration SecurityConfig to integrate everything with Spring Security.
+     */
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//
+//        UserDetails user = User.builder()
+//                .username("nadeem")
+//                .password(passwordEncoder().encode("1234"))
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
-        UserDetails user = User.builder()
-                .username("nadeem")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+//    When you implement UserDetailsService and annotate it with @Service, Spring automatically uses your class instead of the default one.
+// the annotated one can be found in config package under the name Securityconfig
 
 
     // 3 Password Encoder

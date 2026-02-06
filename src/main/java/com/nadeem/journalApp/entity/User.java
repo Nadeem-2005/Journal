@@ -28,6 +28,8 @@ public class User {
     @NonNull
     private String password;
 
+    private List<String> roles = new ArrayList<>();
+
     @DBRef
     private List<JournalEntry> journals  = new ArrayList<>();
 

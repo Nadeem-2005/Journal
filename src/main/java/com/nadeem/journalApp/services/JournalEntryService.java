@@ -6,6 +6,7 @@ import com.nadeem.journalApp.repository.JournalEntryRepository;
 import com.nadeem.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class JournalEntryService {
     //service packages as per developer principles is used to handle business logic
     //while controller exposes endpoints and calls services to handle inside logic
