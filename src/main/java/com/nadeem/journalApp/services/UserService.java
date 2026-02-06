@@ -4,6 +4,7 @@ import com.nadeem.journalApp.entity.User;
 import com.nadeem.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,7 +18,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public void saveUser(User user){
+
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
         userRepository.save(user);
     }
 

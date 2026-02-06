@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // disable for APIs
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/login").permitAll()//redirect happens automatically
+                        .requestMatchers("/user/login").permitAll()//redirect happens automatically
                         .anyRequest().authenticated()
 
                 )

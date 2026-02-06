@@ -49,7 +49,7 @@ public class UserController {
         }
     }
 
-    @PostMapping
+    @PostMapping("login")
     public ResponseEntity<?> saveUser(@RequestBody User user){
         try{
             userService.saveUser(user);
