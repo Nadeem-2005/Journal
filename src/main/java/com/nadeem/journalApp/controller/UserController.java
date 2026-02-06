@@ -78,4 +78,20 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(){
+        try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String userName = auth.getName();
+
+            User user = userService.getUserByUsername(userName);
+            userService.deleteUser(user.getId());
+
+            return new ResponseEntity<>("Your account has been deleted successfully", HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Some problem occured while deleting your account", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }
