@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class UserService {
@@ -26,6 +23,7 @@ public class UserService {
         user.setPassword(
                 passwordEncoder.encode(user.getPassword())
         );
+        user.setRoles(Arrays.asList("User"));
         userRepository.save(user);
     }
 
