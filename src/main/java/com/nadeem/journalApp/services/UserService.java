@@ -18,6 +18,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    //this function is usefull only when we login for the first time and when it is used again to create
+    // another journal entry, the password is again hashed so that fails.
     public void saveUser(User user){
 
         user.setPassword(
@@ -26,6 +28,7 @@ public class UserService {
         user.setRoles(Arrays.asList("User"));
         userRepository.save(user);
     }
+
 
     public List<User> allUsers(){
         return new ArrayList<User>(userRepository.findAll());

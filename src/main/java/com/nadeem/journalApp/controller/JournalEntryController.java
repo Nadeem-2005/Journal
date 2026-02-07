@@ -8,6 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -23,9 +25,11 @@ public class JournalEntryController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("{userName}")
-    public ResponseEntity<?> getAll(@PathVariable String userName){
+    @GetMapping
+    public ResponseEntity<?> getAll(){
         try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String userName = auth.getName();
             User user = userService.getUserByUsername(userName);
 
             List<JournalEntry> all = user.getJournals();
@@ -43,21 +47,29 @@ public class JournalEntryController {
 
     }
 
-//    @GetMapping("/{userName}/{myId}")
-//    public ResponseEntity<JournalEntry> getById(@PathVariable ObjectId myId, @PathVariable String userName){ // path variable name must match
-//        Optional<JournalEntry> journal= journalEntryService.showById(myId);
-//        if(journal.isPresent()){
-//            return new ResponseEntity<>(journal.get(), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//
-//    }
+    @GetMapping("/{myId}")
+    public ResponseEntity<?> getById(@PathVariable ObjectId myId){ // path variable name must match
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
 
-    @PostMapping("{userName}")
-    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry, @PathVariable String userName){
+        User user = userService.getUserByUsername(userName);
+
+        for(JournalEntry j: user.getJournals()){
+            if(j.getId().equals(myId)) {
+                return new ResponseEntity<>(journalEntryService.showById(myId), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("You dont have that specific journal", HttpStatus.NOT_FOUND);
+
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createEntry(@RequestBody JournalEntry myEntry){
         //@RequestBody is like saying to spring that please take the request and turn it into the object of the specified class
         //make sure that input from req is of the same format as the class specified with reqbody
         try{
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String userName = auth.getName();
             myEntry.setDate(LocalDateTime.now());
             journalEntryService.saveEntry(myEntry,userName);
 
@@ -67,16 +79,19 @@ public class JournalEntryController {
         }
     }
 
-    @DeleteMapping("/{userName}/{myId}")
-    public ResponseEntity<Object> deleteJournalEntryById(@PathVariable ObjectId myId, @PathVariable String userName){
-
+    @DeleteMapping("{myId}")
+    public ResponseEntity<Object> deleteJournalEntryById( @PathVariable ObjectId myId){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
         journalEntryService.removeById(myId, userName);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{userName}/{myId}")
-    public ResponseEntity<?> updateJournalById(@PathVariable String userName,@PathVariable ObjectId myId, @RequestBody JournalEntry updateEntry ){
+    @PutMapping("{myId}")
+    public ResponseEntity<?> updateJournalById(@PathVariable ObjectId myId, @RequestBody JournalEntry updateEntry ){
         Optional<JournalEntry> old = journalEntryService.showById(myId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userName = auth.getName();
         if(old.isPresent()){
             old.get().setTitle(updateEntry.getTitle() != null && !updateEntry.getTitle().equals("") ? updateEntry.getTitle() : old.get().getTitle());
             old.get().setContent(updateEntry.getContent() != null && !updateEntry.getTitle().equals("") ? updateEntry.getContent() : old.get().getContent());
