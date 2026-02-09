@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // disable for APIs
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/user/login").permitAll()//redirect happens automatically
+                        .requestMatchers("/admin/**").hasRole("ADMIN")//make sure that the casing of role is same in both DB and Security config
                         .anyRequest().authenticated()
 
                 )
