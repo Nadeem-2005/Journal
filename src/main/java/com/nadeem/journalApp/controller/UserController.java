@@ -6,6 +6,8 @@ import com.nadeem.journalApp.repository.UserRepository;
 import com.nadeem.journalApp.services.JournalEntryService;
 import com.nadeem.journalApp.services.UserService;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -28,16 +30,6 @@ public class UserController {
     private UserService userService;
 
 
-    @GetMapping
-    public ResponseEntity<?> getAllUsers(){
-        try{
-            return new ResponseEntity<>(userService.allUsers(), HttpStatus.OK);
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
 
     @GetMapping("{userId}")
     public ResponseEntity<?> userById(@RequestBody ObjectId userId){
@@ -52,16 +44,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("login")
-    public ResponseEntity<?> saveUser(@RequestBody User user){
-        try{
-            userService.saveUser(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
 
-    }
 
     @PutMapping()
     public ResponseEntity<?> updateUser(@RequestBody User user){

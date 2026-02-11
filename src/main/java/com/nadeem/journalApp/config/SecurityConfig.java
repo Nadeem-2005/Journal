@@ -1,26 +1,25 @@
 package com.nadeem.journalApp.config;
 
-import com.nadeem.journalApp.services.CustomUserDetailService;
+import com.nadeem.journalApp.utils.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-//    @Autowired
-//    private CustomUserDetailService customUserDetailService;
+    @Autowired
+    private JwtFilter jwtFilter;
 
     // 1 Security Rules
 //    http.authorizeRequests(): This tells Spring Security to start authorizing the requests.
@@ -40,13 +39,13 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // disable for APIs
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user/login").permitAll()//redirect happens automatically
+                        .requestMatchers("/public/**").permitAll()//redirect happens automatically
                         .requestMatchers("/admin/**").hasRole("ADMIN")//make sure that the casing of role is same in both DB and Security config
                         .anyRequest().authenticated()
 
                 )
-                .formLogin(Customizer.withDefaults()) // Enable login page
-                .httpBasic(Customizer.withDefaults()); // Enable basic auth
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
@@ -75,6 +74,14 @@ public class SecurityConfig {
 
 //    When you implement UserDetailsService and annotate it with @Service, Spring automatically uses your class instead of the default one.
 // the annotated one can be found in config package under the name Securityconfig
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+
+        return config.getAuthenticationManager();
+    }
 
 
     // 3 Password Encoder

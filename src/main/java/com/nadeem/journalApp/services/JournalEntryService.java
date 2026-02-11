@@ -5,6 +5,8 @@ import com.nadeem.journalApp.entity.User;
 import com.nadeem.journalApp.repository.JournalEntryRepository;
 import com.nadeem.journalApp.repository.UserRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -44,7 +46,7 @@ public class JournalEntryService {
             userRepository.save(user);
         }
         catch (Exception e){
-            System.out.println(e);
+//            System.out.println(e);
             throw new RuntimeException("An error has occured while saving the entry");
         }
 
