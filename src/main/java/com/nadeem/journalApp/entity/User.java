@@ -1,7 +1,9 @@
 package com.nadeem.journalApp.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Reference;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Document(collection = "users")
 @Data
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -25,8 +29,12 @@ public class User {
     @NonNull
     private String userName;
 
+    private String email;
+
     @NonNull
     private String password;
+
+    private  Boolean sentimentAnalysis;
 
     private List<String> roles = new ArrayList<>();
 
