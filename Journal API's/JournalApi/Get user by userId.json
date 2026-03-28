@@ -1,0 +1,24 @@
+{
+  "name": "Get user by userId",
+  "rank": "b02",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/journal/nadeem2",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "GET",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n    \"title\": \"Ajdlfsldjsajf\",\n    \"content\": \"Come on come on\"\n}",
+    "bodyContainer": {
+      "text": "{\n    \"title\": \"Ajdlfsldjsajf\",\n    \"content\": \"Come on come on\"\n}"
+    },
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

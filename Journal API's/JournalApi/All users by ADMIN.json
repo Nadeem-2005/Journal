@@ -1,0 +1,29 @@
+{
+  "name": "All users by ADMIN",
+  "rank": "b01",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/admin/all-users",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "GET",
+    "queryParams": [],
+    "headers": [],
+    "body": "",
+    "bodyContainer": {
+      "text": ""
+    },
+    "contentType": "text/plain",
+    "auth": {
+      "currentAuthType": "BASIC_AUTH",
+      "authConfigStore": {
+        "BASIC_AUTH": {
+          "username": "admin",
+          "password": "admin"
+        }
+      }
+    }
+  }
+}

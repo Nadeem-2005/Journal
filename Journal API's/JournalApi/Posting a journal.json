@@ -1,0 +1,29 @@
+{
+  "name": "Posting a journal",
+  "rank": "ax",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/journal",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "POST",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n    \"title\": \"title2\",\n    \"content\": \"content2\"\n}",
+    "bodyContainer": {
+      "text": "{\n    \"title\": \"title2\",\n    \"content\": \"content2\"\n}"
+    },
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "BASIC_AUTH",
+      "authConfigStore": {
+        "BASIC_AUTH": {
+          "username": "nadeem",
+          "password": "nadeem"
+        }
+      }
+    }
+  }
+}

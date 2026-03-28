@@ -1,0 +1,29 @@
+{
+  "name": "Getting a user specific journa;",
+  "rank": "ay",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/journal/69879dac9c9d0d52994920dd",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "GET",
+    "queryParams": [],
+    "headers": [],
+    "body": "",
+    "bodyContainer": {
+      "text": ""
+    },
+    "contentType": "text/plain",
+    "auth": {
+      "currentAuthType": "BASIC_AUTH",
+      "authConfigStore": {
+        "BASIC_AUTH": {
+          "username": "nadeem",
+          "password": "nadeem"
+        }
+      }
+    }
+  }
+}

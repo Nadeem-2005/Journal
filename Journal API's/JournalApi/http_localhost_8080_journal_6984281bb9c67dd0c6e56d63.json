@@ -1,0 +1,24 @@
+{
+  "name": "http_localhost_8080_journal_6984281bb9c67dd0c6e56d63",
+  "rank": "b00",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/journal/6984281bb9c67dd0c6e56d63",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "PUT",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n    \"title\": \"new title 34\"\n}",
+    "bodyContainer": {
+      "text": "{\n    \"title\": \"new title 34\"\n}"
+    },
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}

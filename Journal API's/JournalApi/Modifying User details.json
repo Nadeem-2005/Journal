@@ -1,0 +1,24 @@
+{
+  "name": "Modifying User details",
+  "rank": "b04",
+  "request": {
+    "type": "http",
+    "url": "http://localhost:8080/user/nadeem2",
+    "scripts": {
+      "preRequest": "",
+      "postResponse": ""
+    },
+    "method": "PUT",
+    "queryParams": [],
+    "headers": [],
+    "body": "{\n    \"userName\":\"nadeem3\",\n    \"password\":\"hellNo2 to hellNo3\"\n}",
+    "bodyContainer": {
+      "text": "{\n    \"userName\":\"nadeem3\",\n    \"password\":\"hellNo2 to hellNo3\"\n}"
+    },
+    "contentType": "application/json",
+    "auth": {
+      "currentAuthType": "INHERIT",
+      "authConfigStore": {}
+    }
+  }
+}
